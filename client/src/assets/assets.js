@@ -103,24 +103,24 @@ export const dummyEducatorData = {
 
 export const dummyTestimonial = [
   {
-    name: "Sophia Carter",
-    role: "Student @ AKTU",
-    image: assets.abhishek,
+    name: "Donald Jackman",
+    role: "SWE @ Amazon",
+    image: assets.profile_img_1,
     rating: 5,
     feedback:
       "Edemy LMS has revolutionized my teaching experience. The platform is intuitive, making course creation and student engagement seamless.",
   },
   {
-    name: "Shreyansh Dubey",
-    role: "Student @ KNIT",
-    image: assets.shreyansh,
+    name: "Richard Nelson",
+    role: "SWE @ Samsung",
+    image: assets.profile_img_2,
     rating: 4.8,
     feedback:
       "Edemy LMS provides an exceptional learning environment. The structured courses, real-time tracking, and user-friendly interface are top-notch.",
   },
   {
-    name: "Olivia Martinez",
-    role: "Software Engineer @ Microsoft",
+    name: "James Washington",
+    role: "SWE @ Google",
     image: assets.profile_img_3,
     rating: 4.7,
     feedback:

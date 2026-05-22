@@ -9,11 +9,12 @@ const Testimonials = () => {
         success and how our <br /> platform has made a difference in their
         lives.
       </p>
-      <div>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-8 mt-14">
         {dummyTestimonial.map((testimonial, idx) => (
           <div
             key={idx}
-            className="text-sm text-left border border-gray-500/30 pb-6 rounded-lg bg-white"
+            className="text-sm text-left border border-gray-500/30 pb-6 rounded-lg bg-white 
+                       shadow-[0px_4px_15px_0px] shadow-black/5 overflow-hidden"
           >
             <div className="flex items-center gap-4 px-5 py-4 bg-gray-500/10">
               <img
@@ -27,26 +28,27 @@ const Testimonials = () => {
                 </h1>
                 <p className="text-gray-800/80">{testimonial.role}</p>
               </div>
-              <div className="p-5 pb-7">
-                <div className="flex gap-0.5">
-                  {[
-                    ...Array(5).map((_, i) => (
-                      <img
-                        src={
-                          i < Math.floor(testimonial.rating)
-                            ? assets.star
-                            : assets.star_blank
-                        }
-                        key={i}
-                        alt="star"
-                        className="h-5"
-                      />
-                    )),
-                  ]}
-                </div>
-                <p className="text-gray-500 mt-5">{testimonial.feedback}</p>
-              </div>
             </div>
+            <div className="p-5 pb-7">
+              <div className="flex gap-0.5">
+                {[...Array(5)].map((_, i) => (
+                  <img
+                    src={
+                      i < Math.floor(testimonial.rating)
+                        ? assets.star
+                        : assets.star_blank
+                    }
+                    key={i}
+                    alt="star"
+                    className="h-5"
+                  />
+                ))}
+              </div>
+              <p className="text-gray-500 mt-5">{testimonial.feedback}</p>
+            </div>
+            <a href="#" className="text-blue-500 underline px-5">
+              Read more
+            </a>
           </div>
         ))}
       </div>
