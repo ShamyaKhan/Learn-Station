@@ -1,7 +1,20 @@
+import { assets, dummyEducatorData } from "../../assets/assets";
+import { useUser, UserButton } from "@clerk/react";
+import { Link } from "react-router-dom";
+
 const Navbar = () => {
+  const { user } = useUser();
+  const educatorData = dummyEducatorData;
+
   return (
-    <div>
-      <h1>Educator Navbar</h1>
+    <div className="flex items-center justify-between px-4 md:px-8 border-b border-gray-500 py-3">
+      <Link to="/">
+        <img src={assets.logo} className=" w-28 lg:w-32" />
+      </Link>
+      <div className="flex items-center gap-5 text-gray-500 relative">
+        <p>Hi {user ? user.fullName : "Developer"}</p>
+        {user ? <UserButton /> : <img src={assets.profile_img} />}
+      </div>
     </div>
   );
 };
