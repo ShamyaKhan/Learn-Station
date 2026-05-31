@@ -3,5 +3,15 @@ require("dotenv").config();
 const PORT_NUMBER = Number(process.env.PORT_NUMBER);
 const MONGODB_URI = process.env.MONGODB_URI;
 const CLERK_WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
+const CLOUDINARY_NAME = process.env.CLOUDINARY_NAME;
+const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
+const CLOUDINARY_SECRET_KEY = process.env.CLOUDINARY_SECRET_KEY;
 
-module.exports = { PORT_NUMBER, MONGODB_URI, CLERK_WEBHOOK_SECRET };
+module.exports = {
+  PORT_NUMBER,
+  MONGODB_URI,
+  CLERK_WEBHOOK_SECRET,
+  CLOUDINARY_API_KEY,
+  CLOUDINARY_NAME,
+  CLOUDINARY_SECRET_KEY,
+};
