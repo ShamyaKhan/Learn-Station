@@ -1,6 +1,10 @@
 const { Webhook } = require("svix");
-const { CLERK_WEBHOOK_SECRET } = require("../utils/constants");
+const {
+  CLERK_WEBHOOK_SECRET,
+  STRIPE_SECRET_KEY,
+} = require("../utils/constants");
 const User = require("../models/User");
+const stripe = require("stripe")(STRIPE_SECRET_KEY);
 
 const clerkWebhooks = async (req, res) => {
   try {
@@ -48,6 +52,13 @@ const clerkWebhooks = async (req, res) => {
       default:
         break;
     }
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+};
+
+const stripeWebhooks = async (req, res) => {
+  try {
   } catch (err) {
     res.json({ success: false, message: err.message });
   }

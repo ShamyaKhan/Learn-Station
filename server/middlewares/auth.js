@@ -14,3 +14,5 @@ const protectEducator = async (req, res, next) => {
     res.json({ success: false, message: err.message });
   }
 };
+
+module.exports = { protectEducator };

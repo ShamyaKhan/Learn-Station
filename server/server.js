@@ -6,6 +6,8 @@ const connectDB = require("./configs/db");
 const { clerkWebhooks } = require("./controllers/webhooks");
 const { clerkMiddleware } = require("@clerk/express");
 const educatorRouter = require("./routes/educatorRoutes");
+const courseRouter = require("./routes/courseRoutes");
+const userRouter = require("./routes/userRoutes");
 const connectCloudinary = require("./configs/cloudinary");
 
 const app = express();
@@ -20,6 +22,8 @@ app.get("/", (req, res) => {
 
 app.post("/clerk", clerkWebhooks);
 app.use("/api/educator", educatorRouter);
+app.use("/api/course", courseRouter);
+app.use("/api/user", userRouter);
 
 const PORT = PORT_NUMBER || 4000;
 
