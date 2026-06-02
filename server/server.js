@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const { PORT_NUMBER } = require("./utils/constants");
 const connectDB = require("./configs/db");
-const { clerkWebhooks } = require("./controllers/webhooks");
+const { clerkWebhooks, stripeWebhooks } = require("./controllers/webhooks");
 const { clerkMiddleware } = require("@clerk/express");
 const educatorRouter = require("./routes/educatorRoutes");
 const courseRouter = require("./routes/courseRoutes");
@@ -24,6 +24,7 @@ app.post("/clerk", clerkWebhooks);
 app.use("/api/educator", educatorRouter);
 app.use("/api/course", courseRouter);
 app.use("/api/user", userRouter);
+app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 
 const PORT = PORT_NUMBER || 4000;
 

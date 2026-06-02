@@ -2,8 +2,11 @@ const { Webhook } = require("svix");
 const {
   CLERK_WEBHOOK_SECRET,
   STRIPE_SECRET_KEY,
+  STRIPE_WEBHOOK_SECRET,
 } = require("../utils/constants");
 const User = require("../models/User");
+const Purchase = require("../models/Purchase");
+const Course = require("../models/Course");
 const stripe = require("stripe")(STRIPE_SECRET_KEY);
 
 const clerkWebhooks = async (req, res) => {
@@ -58,10 +61,65 @@ const clerkWebhooks = async (req, res) => {
 };
 
 const stripeWebhooks = async (req, res) => {
+  const sig = req.headers["stripe-signature"];
+  let event;
   try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      STRIPE_WEBHOOK_SECRET,
+    );
   } catch (err) {
     res.json({ success: false, message: err.message });
   }
+
+  switch (event.type) {
+    case "payment_intent.succeeded": {
+      const paymentIntent = event.data.object;
+      const paymentIntentId = paymentIntent.id;
+
+      const session = await stripe.checkout.sessions.list({
+        payment_intent: paymentIntentId,
+      });
+
+      const { purchaseId } = session.data[0].metadata;
+
+      const purchaseData = await Purchase.findById(purchaseId);
+      const userData = await User.findById(purchaseData.userId);
+      const courseData = await Course.findById(
+        purchaseData.courseId.toString(),
+      );
+
+      courseData.enrolledStudents.push(userData);
+      await courseData.save();
+
+      userData.enrolledCourses.push(courseData._id);
+      await userData.save();
+
+      purchaseData.status = "completed";
+      await purchaseData.save();
+
+      break;
+    }
+    case "payment_intent.payment_failed": {
+      const paymentIntent = event.data.object;
+      const paymentIntentId = paymentIntent.id;
+
+      const session = await stripe.checkout.sessions.list({
+        payment_intent: paymentIntentId,
+      });
+
+      const { purchaseId } = session.data[0].metadata;
+      const purchaseData = await Purchase.findById(purchaseId);
+      purchaseData.status = "failed";
+      await purchaseData.save();
+      break;
+    }
+    default:
+      console.log(`Unhandled webhook event type: ${event.type}`);
+  }
+
+  res.json({ received: true });
 };
 
-module.exports = { clerkWebhooks };
+module.exports = { clerkWebhooks, stripeWebhooks };
