@@ -2,18 +2,37 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import { assets, dummyDashboardData } from "../../assets/assets";
 import Loading from "../../components/student/Loading";
+import { BACKEND_URL } from "../../utils/constants";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
-  const { currency } = useContext(AppContext);
+  const { currency, isEducator, getToken } = useContext(AppContext);
 
   const fetchDashboardData = async () => {
-    setDashboardData(dummyDashboardData);
+    try {
+      const token = await getToken();
+      const { data } = await axios.get(
+        `${BACKEND_URL}/api/educator/dashboard`,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      if (data.success) {
+        setDashboardData(data.dashboardData);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   useEffect(() => {
-    fetchDashboardData();
-  }, []);
+    if (isEducator) {
+      fetchDashboardData();
+    }
+  }, [isEducator]);
 
   return dashboardData ? (
     <div
@@ -29,7 +48,9 @@ const Dashboard = () => {
             <img src={assets.patients_icon} />
             <div>
               <p className="text-2xl font-medium text-gray-600">
-                {dashboardData.enrolledStudentsData.length}
+                {dashboardData.enrolledStudentsData
+                  ? dashboardData.enrolledStudentsData.length
+                  : 0}
               </p>
               <p className="text-base text-gray-500">Total Enrollments</p>
             </div>
@@ -78,22 +99,23 @@ const Dashboard = () => {
               </thead>
 
               <tbody className="text-sm text-gray-500">
-                {dashboardData.enrolledStudentsData.map((item, index) => (
-                  <tr key={index} className="border-b border-gray-500/20">
-                    <td className="px-4 py-3 text-center hidden sm:table-cell">
-                      {index + 1}
-                    </td>
-                    <td className="md:px-4 px-2 py-3 flex items-center space-x-3">
-                      <img
-                        src={item.student.imageUrl}
-                        alt="student"
-                        className="w-9 h-9 rounded-full"
-                      />
-                      <span className="truncate">{item.student.name}</span>
-                    </td>
-                    <td className="px-4 py-3 truncate">{item.courseTitle}</td>
-                  </tr>
-                ))}
+                {dashboardData.enrolledStudentsData &&
+                  dashboardData.enrolledStudentsData.map((item, index) => (
+                    <tr key={index} className="border-b border-gray-500/20">
+                      <td className="px-4 py-3 text-center hidden sm:table-cell">
+                        {index + 1}
+                      </td>
+                      <td className="md:px-4 px-2 py-3 flex items-center space-x-3">
+                        <img
+                          src={item.student.imageUrl}
+                          alt="student"
+                          className="w-9 h-9 rounded-full"
+                        />
+                        <span className="truncate">{item.student.name}</span>
+                      </td>
+                      <td className="px-4 py-3 truncate">{item.courseTitle}</td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
