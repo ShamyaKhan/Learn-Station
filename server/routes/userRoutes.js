@@ -18,7 +18,7 @@ router.post("/purchase", purchaseCourse);
 
 router.post("/update-course-progress", updateUserCourseProgress);
 
-router.get("/get-course-progress", getUserCourseProgress);
+router.post("/get-course-progress", getUserCourseProgress);
 
 router.post("/add-rating", addUserRating);
 
