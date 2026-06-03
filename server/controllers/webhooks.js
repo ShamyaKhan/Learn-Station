@@ -61,7 +61,6 @@ const clerkWebhooks = async (req, res) => {
 };
 
 const stripeWebhooks = async (req, res) => {
-  console.log("reached stripe webhook controller");
   const sig = req.headers["stripe-signature"];
   let event;
   try {
@@ -70,7 +69,6 @@ const stripeWebhooks = async (req, res) => {
       sig,
       STRIPE_WEBHOOK_SECRET,
     );
-    console.log(event.type);
 
     switch (event.type) {
       case "payment_intent.succeeded": {
