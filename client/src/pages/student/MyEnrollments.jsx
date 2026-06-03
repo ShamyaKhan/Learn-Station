@@ -24,7 +24,7 @@ const MyEnrollments = () => {
       const token = await getToken();
       const tempProgessArray = await Promise.all(
         enrolledCourses.map(async (course) => {
-          const { data } = await axios.post(
+          const { data } = await axios.get(
             `${BACKEND_URL}/api/user/get-course-progress`,
             { courseId: course._id },
             { headers: { Authorization: `Bearer ${token}` } },
