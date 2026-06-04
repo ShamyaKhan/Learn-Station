@@ -9,7 +9,9 @@ const Navbar = () => {
   return (
     <div className="flex items-center justify-between px-4 md:px-8 border-b border-gray-500 py-3">
       <Link to="/">
-        <img src={assets.logo} className=" w-28 lg:w-32" />
+        <h2 className="w-32 lg:w-36 border bg-blue-100 text-center cursor-pointer rounded-lg text-xl">
+          Learn Station
+        </h2>
       </Link>
       <div className="flex items-center gap-5 text-gray-500 relative">
         <p>Hi {user ? user.fullName : "Developer"}</p>

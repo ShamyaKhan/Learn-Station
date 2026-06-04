@@ -71,7 +71,7 @@ const educatorDashboardData = async (req, res) => {
       0,
     );
 
-    const enrolledStudentsdata = [];
+    const enrolledStudentsData = [];
 
     for (let course of courses) {
       const students = await User.find(
@@ -81,7 +81,7 @@ const educatorDashboardData = async (req, res) => {
         "name imageUrl",
       );
       students.forEach((student) => {
-        enrolledStudentsdata.push({
+        enrolledStudentsData.push({
           courseTitle: course.courseTitle,
           student,
         });
@@ -90,7 +90,7 @@ const educatorDashboardData = async (req, res) => {
 
     res.json({
       success: true,
-      dashboardData: { totalEarnings, enrolledStudentsdata, totalCourses },
+      dashboardData: { totalEarnings, enrolledStudentsData, totalCourses },
     });
   } catch (err) {
     res.json({ success: false, message: err.message });
