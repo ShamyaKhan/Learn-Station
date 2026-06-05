@@ -103,6 +103,16 @@ const Player = () => {
     }
   };
 
+  function getYoutubeId(url) {
+    const parsed = new URL(url);
+
+    if (parsed.hostname.includes("youtu.be")) {
+      return parsed.pathname.slice(1);
+    }
+
+    return parsed.searchParams.get("v");
+  }
+
   useEffect(() => {
     getCourseProgess();
   }, []);
@@ -112,6 +122,9 @@ const Player = () => {
       getCourseData();
     }
   }, [enrolledCourses]);
+
+  console.log("playerData: ", playerData);
+  console.log("courseData: ", courseData);
 
   return courseData ? (
     <>
@@ -215,7 +228,7 @@ const Player = () => {
           {playerData ? (
             <div className="">
               <YouTube
-                videoId={playerData.lectureUrl.split("/").pop()}
+                videoId={getYoutubeId(playerData.lectureUrl)}
                 iframeClassName="w-full aspect-video"
               />
               <div className="flex justify-between items-center mt-1">
